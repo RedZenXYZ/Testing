@@ -1,0 +1,273 @@
+local RedGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Frame2 = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local KillGui = Instance.new("TextButton")
+local Mini = Instance.new("TextButton")
+local Button1 = Instance.new("TextButton")
+local Button2 = Instance.new("TextButton")
+local Button1Setting = Instance.new("TextButton")
+local Button1Set = Instance.new("TextBox")
+local Button1Hitbox = Instance.new("TextBox")
+_G.Farm = false
+
+RedGui.Name = "RedGui"
+RedGui.Parent = game.CoreGui
+
+Frame.Name = "Frame"
+Frame.Parent = RedGui
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BackgroundTransparency = .5
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 2
+Frame.Position = UDim2.new(0, 100, 0, 100)
+Frame.Size = UDim2.new(0, 150, 0, 25)
+Frame.Active = true
+Frame.Draggable = true
+Frame.Visible = true
+
+Frame2.Name = "Frame2"
+Frame2.Parent = Frame
+Frame2.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Frame2.BackgroundTransparency = .5
+Frame2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame2.BorderSizePixel = 2
+Frame2.Position = UDim2.new(0, 0, 0, 30)
+Frame2.Size = UDim2.new(0, 150, 0, 100)
+Frame2.Active = false
+Frame2.Draggable = false
+Frame2.Visible = true
+
+TextLabel.Name = "TextLabel"
+TextLabel.Parent = Frame
+TextLabel.Size = UDim2.new(0, 100, 0, 25)
+TextLabel.Position = UDim2.new(0, 25, 0, 0)
+TextLabel.Text = "Auto Kill Dummy"
+TextLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextSize = 20
+TextLabel.Visible = true
+TextLabel.TextScaled = true
+TextLabel.BackgroundTransparency = 1
+
+KillGui.Name = "KillGui"
+KillGui.Parent = Frame
+KillGui.Size = UDim2.new(0, 25, 0, 25)
+KillGui.Position = UDim2.new(0, 0, 0, 0)
+KillGui.Text = "X"
+KillGui.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+KillGui.TextColor3 = Color3.fromRGB(0, 0, 0)
+KillGui.TextScaled = true
+KillGui.TextSize = 20
+KillGui.Visible = true
+KillGui.BackgroundTransparency = .4
+KillGui.MouseButton1Click:Connect(function()
+	RedGui:Destroy()
+end)
+
+Mini.Name = "Mini"
+Mini.Parent = Frame
+Mini.Size = UDim2.new(0, 25, 0, 25)
+Mini.Position = UDim2.new(0, 125, 0, 0)
+Mini.Text = "-"
+Mini.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Mini.TextColor3 = Color3.fromRGB(0, 0, 0)
+Mini.TextScaled = false
+Mini.TextSize = 27.5
+Mini.Visible = true
+Mini.BackgroundTransparency = 0.4
+Mini.MouseButton1Click:Connect(function()
+	if Mini.Text == "-" then
+		Mini.Text = "+"
+		Frame2.Visible = false
+	elseif Mini.Text == "+" then
+		Mini.Text = "-"
+		Frame2.Visible = true
+	end
+end)
+
+Button1.Name = "Button1"
+Button1.Parent = Frame2
+Button1.Size = UDim2.new(0, 96, 0, 25)
+Button1.Position = UDim2.new(0, 12.5, 0, 12.5)
+Button1.Text = "Off"
+Button1.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button1.TextScaled = true
+Button1.TextSize = 20
+Button1.Visible = true
+Button1.BackgroundTransparency = .5
+Button1.BorderColor3 = Color3.fromRGB(255, 255, 255)
+Button1.BorderSizePixel = 2
+Button1.MouseButton1Click:Connect(function()
+	if Button1.Text == "Off" then
+		Button1.Text = "On"
+		Button1.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+		_G.Farm = true
+		TurnOnKill()
+	elseif Button1.Text == "On" then
+		Button1.Text = "Off"
+		Button1.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		_G.Farm = false
+		for i = 1, 10 do
+			pcall(function()
+				game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChildOfClass("BodyVelocity"):Destroy()
+				game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChildOfClass("BodyGyro"):Destroy()
+			end)
+		end
+	end
+end)
+
+Button1Setting.Name = "Button1Setting"
+Button1Setting.Parent = Button1
+Button1Setting.Size = UDim2.new(0, 25, 0, 25)
+Button1Setting.Position = UDim2.new(0, 100, 0, 0)
+Button1Setting.Text = "⚙️"
+Button1Setting.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Button1Setting.BorderColor3 = Color3.fromRGB(255, 255, 255)
+Button1Setting.BorderSizePixel = 2
+Button1Setting.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button1Setting.TextScaled = true
+Button1Setting.TextSize = 20
+Button1Setting.Visible = true
+Button1Setting.BackgroundTransparency = .5
+Button1Setting.MouseButton1Up:Connect(function()
+	if Button1Setting.BackgroundColor3 == Color3.fromRGB(0, 0, 0) then
+		Button1Setting.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		Button1Set.Visible = true
+		Button1Hitbox.Visible = true
+	else
+		if Button1Setting.BackgroundColor3 == Color3.fromRGB(255, 0, 0) then
+			Button1Setting.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			Button1Set.Visible = false
+			Button1Hitbox.Visible = false
+		end
+	end
+end)
+
+Button1Set.Name = "Button1Set"
+Button1Set.Parent = Button1
+Button1Set.Size = UDim2.new(0, 50, 0, 25)
+Button1Set.Position = UDim2.new(0, 140.5, 0, 0)
+Button1Set.Text = "5"
+Button1Set.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Button1Set.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Button1Set.BorderSizePixel = 2
+Button1Set.TextColor3 = Color3.fromRGB(0, 0, 0)
+Button1Set.TextScaled = true
+Button1Set.TextSize = 20
+Button1Set.Visible = false
+Button1Set.BackgroundTransparency = .5
+
+Button1Hitbox.Name = "Button1Hitbox"
+Button1Hitbox.Parent = Button1
+Button1Hitbox.Size = UDim2.new(0, 50, 0, 25)
+Button1Hitbox.Position = UDim2.new(0, 140.5, 0, 25)
+Button1Hitbox.Text = "4"
+Button1Hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Button1Hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Button1Hitbox.BorderSizePixel = 2
+Button1Hitbox.TextColor3 = Color3.fromRGB(0, 0, 0)
+Button1Hitbox.TextScaled = true
+Button1Hitbox.TextSize = 20
+Button1Hitbox.Visible = false
+Button1Hitbox.BackgroundTransparency = .5
+
+Button2.Name = "Button2"
+Button2.Parent = Frame2
+Button2.Size = UDim2.new(0, 125, 0, 25)
+Button2.Position = UDim2.new(0, 12.5, 0, 50)
+Button2.Text = "Fire Axe"
+Button2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button2.TextScaled = true
+Button2.TextSize = 20
+Button2.Visible = true
+Button2.BackgroundTransparency = .5
+Button2.BorderColor3 = Color3.fromRGB(255, 255, 255)
+Button2.BorderSizePixel = 2
+Button2.MouseButton1Click:Connect(function()
+	Button2.Text = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
+end)
+
+function HeadHitbox()
+	spawn(function()
+		for i,v in pairs(game.Workspace.Characters:GetChildren()) do
+			if v.Name == "Dummy" and v:FindFirstChild("Head") then
+				v.Head.Size = Vector3.new(Button1Hitbox.Text, Button1Hitbox.Text, Button1Hitbox.Text)
+				v.Head.Transparency = 0.8
+				v.Head.Color = Color3.new(0, 1, 0)
+				v.Head.Material = "Neon"
+				v.Head.CanCollide = false
+			end
+		end
+		for i,v in pairs(game.Workspace.Characters:GetChildren()) do
+			if v.Name == "Dummy" and v:FindFirstChild("Head") and v:FindFirstChildOfClass("Humanoid").Health == 0 then
+				v.Head.Size = Vector3.new(1, 1, 1)
+				v.Head.Transparency = 0
+				v.Head.Color = Color3.new(0, 1, 0)
+				v.Head.Material = "Neon"
+				v.Head.CanCollide = false
+			end
+		end
+	end)
+end
+
+function TurnOnKill()
+	spawn(function()
+		local BV = Instance.new("BodyVelocity",game.Players.LocalPlayer.Character.HumanoidRootPart)
+		local BG = Instance.new("BodyGyro",game.Players.LocalPlayer.Character.HumanoidRootPart)
+		BG.MaxTorque = Vector3.new(math.huge,math.huge,math.huge)
+		BG.D = 0
+		BG.P = 0
+		BV.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector * 0.0000000001
+		BG.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+		while _G.Farm == true do wait()
+			pcall(function()
+				HeadHitbox()
+				if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(Button2.Text) then
+					game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(Button2.Text).Parent = game:GetService("Players").LocalPlayer.Character
+				end
+				game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = true
+				local dist = math.huge
+				local target = nil
+				for i,v in pairs(game:GetService("Workspace").Characters:GetChildren()) do
+					if v.Name == "Dummy" and v: FindFirstChild ("HumanoidRootPart") and v: FindFirstChildOfClass ("Humanoid").Health ~= 0 then
+						local magnitude = (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+						if magnitude < dist then
+							dist = magnitude
+							target = v
+							game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame* CFrame.new(0, 0, Button1Set.Text)
+						end
+					end
+				end
+			end)
+		end
+	end)
+end
+
+spawn(function()
+	while true do wait(1)
+		for i,v in pairs(workspace.Ragdolls:GetChildren()) do
+			v:Destroy()
+		end
+	end
+end)
+
+Plr.CharacterAdded:Connect(function()
+	if _G.Farm == true then
+		local BV = Instance.new("BodyVelocity",game.Players.LocalPlayer.Character.HumanoidRootPart)
+		local BG = Instance.new("BodyGyro",game.Players.LocalPlayer.Character.HumanoidRootPart)
+		BG.MaxTorque = Vector3.new(math.huge,math.huge,math.huge)
+		BG.D = 0
+		BG.P = 0
+		BG.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+		BV.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector * 0.0000000001
+	elseif _G.Farm == false then
+		--- Do Nothing
+	end
+end)
+
+loadstring(game:HttpGet('https://pastebin.com/raw/2U35hhrq'))()
